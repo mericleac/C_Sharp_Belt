@@ -1,0 +1,70 @@
+@model Activity
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Index</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
+    <link rel='stylesheet' type='text/css' media='screen' href='~/css/style.css' />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Dojo Activity Center</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navBarCollapse">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/new">Add new Activity</a>
+            </li>
+            </ul>
+        </div>
+        <p>Welcome @ViewBag.currUser.FirstName!</p>
+        <a href="/logout">Log out</a>
+    </nav>
+    <div class="container">
+        @{
+            if (TempData["JoinError"] != null)
+            {
+                <span class="error">@TempData["JoinError"]</span>
+            }
+        }
+        <br>
+        <h2 class="title">@Model.Title</h2>
+        @{
+            if (@Model.UserId == @ViewBag.currUser.Id){
+                <a class="action btn btn-danger" href="/delete/@Model.ActivityId">Delete</a>
+            }
+            else if (@Model.Participants.FindIndex(x => x.UserId == @ViewBag.currUser.Id) != -1){
+                <a class="action btn btn-warning" href="/leave/@Model.ActivityId/showActivity">Leave</a>
+            }
+            else {
+                <a class="action btn btn-success" href="/join/@Model.ActivityId/showActivity">Join</a>
+            }
+        }
+        <div class="description">
+            <h5>Event Coordinator:</h5>
+            <p>@Model.User.FirstName</p>
+            <br>
+            <h5>Description:</h5>
+            <p>@Model.Description</p>
+            <br>
+            <h5>Participants:</h5>
+            <ul>
+                @{
+                    foreach(Participant par in @Model.Participants)
+                    {
+                        <li><h6>@par.User.FirstName</h6></li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

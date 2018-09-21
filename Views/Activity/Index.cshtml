@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Index</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
+    <link rel='stylesheet' type='text/css' media='screen' href='~/css/style.css' />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Dojo Activity Center</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navBarCollapse">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/new">Add new Activity</a>
+            </li>
+            </ul>
+        </div>
+        <p>Welcome @ViewBag.currUser.FirstName!</p>
+        <a href="/logout">Log out</a>
+    </nav>
+    <div class="container">
+        @{
+            if (TempData["JoinError"] != null)
+            {
+                <span class="error">@TempData["JoinError"]</span>
+            }
+        }
+        <table class="table">
+            <thead>
+                <th>Activity</th>
+                <th>Date and Time</th>
+                <th>Duration</th>
+                <th>Event Coordinator</th>
+                <th>Number of Participants</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                @{
+                    foreach(Activity act in @ViewBag.allActivities)
+                    {
+                        <tr>
+                            <td><a href="activity/@act.ActivityId">@act.Title</a></td>
+                            <td>@act.StartTime.ToString("M/d @ h:mm tt")</td>
+                            <td>@act.Duration</td>
+                            <td>@act.User.FirstName</td>
+                            <td>@act.Participants.Count()</td>
+                            @{
+                                if (@act.UserId == @ViewBag.currUser.Id){
+                                    <td><a href="/delete/@act.ActivityId">Delete</a></td>
+                                }
+                                else if (@act.Participants.FindIndex(x => x.UserId == @ViewBag.currUser.Id) != -1){
+                                    <td><a href="/leave/@act.ActivityId">Leave</a></td>
+                                }
+                                else {
+                                    <td><a href="/join/@act.ActivityId">Join</a></td>
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <a class="btn btn-warning" href="/new">New Activity</a>
+    </div>
+</body>
+</html>

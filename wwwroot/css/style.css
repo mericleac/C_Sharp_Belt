@@ -1,0 +1,52 @@
+.error {
+    color: red;
+}
+
+nav p {
+    display: inline-block;
+    margin: auto 2%;
+}
+
+.container {
+    margin-top: 2%;
+}
+
+h1 {
+    margin-bottom: 4%;
+}
+
+h2.title {
+    margin-bottom: 4%;
+    display: inline-block;
+    width: 60%;
+}
+
+.form-row {
+    margin-bottom: 2%;
+}
+
+.action.btn {
+    float: right;
+    width: 10%;
+}
+
+.description {
+    margin-left: 5%;
+}
+
+.description h5,p {
+    display: inline-block;
+}
+
+.description p {
+    margin-left: 5%;
+    font-size: 1.25rem;
+}
+
+.description ul {
+    list-style: none;
+}
+
+.description li {
+    font-size: 1.25rem;
+}
