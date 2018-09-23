@@ -38,6 +38,7 @@ namespace BeltTemplate
         {
             if (env.IsDevelopment())
             {
+                loggerFactory.AddConsole();
                 app.UseDeveloperExceptionPage();
             }
 
